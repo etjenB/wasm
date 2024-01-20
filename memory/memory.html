@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory</title>
+</head>
+<body>
+    <script>
+        let memory = new WebAssembly.Memory({initial: 1, maximum: 1});
+        let arr = new Uint32Array(memory.buffer);
+        const importObject = {
+            env: {
+                memory: memory
+            }
+        };
+
+        WebAssembly.instantiateStreaming(fetch('reverse.wasm'), importObject).then(({instance, module}) => {
+            for (let index = 0; index < 30; index++) {
+                arr[index] = index + 1;
+            }
+            instance.exports.reverse(0, 30);
+            console.log(arr);
+        });
+    </script>
+</body>
+</html>
