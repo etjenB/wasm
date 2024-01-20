@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table</title>
+</head>
+<body>
+    <script>
+        let table = new WebAssembly.Table({initial:2,element:"anyfunc"});
+        WebAssembly.instantiateStreaming(fetch('table.wasm'), {
+            env: {
+                myTable: table
+            }
+        }).then((result)=>{
+            console.log(result);
+        });
+    </script>
+</body>
+</html>
